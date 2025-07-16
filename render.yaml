@@ -1,20 +1,12 @@
 services:
   - type: web
-    name: whanau-tech-backend
+    name: whanau-tech
     env: python
     buildCommand: |
       cd backend
       pip install -r requirements.txt
+      npm install --prefix ../frontend
+      npm run build --prefix ../frontend
+      cp -r ../frontend/build backend/static/build
     startCommand: gunicorn backend.wsgi:app
     healthCheckPath: /api/hello
-    autoDeploy: true
-
-  - type: static
-    name: whanau-tech-frontend
-    env: node
-    buildCommand: |
-      cd frontend
-      npm install
-      npm run build
-    staticPublishPath: frontend/build
-    autoDeploy: true
