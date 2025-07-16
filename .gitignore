@@ -44,9 +44,6 @@ build/
 *.swp
 *.swo
 
-# --- Render Deployment Config ---
-render.yaml
-
 # --- Logs ---
 *.log
 
