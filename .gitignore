@@ -1,0 +1,57 @@
+# --- macOS System Files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+*.pyo
+.Python
+.env
+.venv/
+venv/
+ENV/
+env/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+pip-log.txt
+pip-delete-this-directory.txt
+pyvenv.cfg
+
+# --- Flask ---
+instance/
+*.sqlite
+*.db
+*.log
+
+# --- Node / React ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+build/
+
+# --- IDEs / Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Render Deployment Config ---
+render.yaml
+
+# --- Logs ---
+*.log
+
+# --- Other ---
+coverage/
+htmlcov/
+*.cover
+.cache/
