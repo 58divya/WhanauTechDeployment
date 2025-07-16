@@ -4,25 +4,32 @@ from flask_cors import CORS
 
 
 def create_app():
-    # Create Flask app and set React build folder as static folder
-    app = Flask(__name__, static_folder="static/build", static_url_path="")
+    # Set up Flask app to serve from React build directory
+    app = Flask(
+        __name__,
+        static_folder="static/build",
+        static_url_path=""
+    )
 
-    # Enable CORS for local dev and deployed frontend domains
-    CORS(app, origins=["http://localhost:3000", "https://whanautech.onrender.com"])
+    # Allow CORS from local development and deployed frontend
+    CORS(app, origins=[
+        "http://localhost:3000",
+        "https://whanautech.onrender.com"
+    ])
 
-    # API route example
+    # API route
     @app.route("/api/hello")
     def hello():
         return jsonify(message="Hello from the backend!")
 
-    # Serve React static files and index.html for all other routes
+    # Serve React build (frontend)
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
-    def serve_react(path):
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+    def serve(path):
+        full_path = os.path.join(app.static_folder, path)
+        if path != "" and os.path.exists(full_path):
             return send_from_directory(app.static_folder, path)
         else:
-            # Serve index.html for React Router to handle routing
             return send_from_directory(app.static_folder, "index.html")
 
     return app
