@@ -1,12 +1,19 @@
 services:
   - type: web
     name: whanau-tech
-    env: python
-    buildCommand: |
-      cd backend
-      pip install -r requirements.txt
-      npm install --prefix ../frontend
-      npm run build --prefix ../frontend
-      cp -r ../frontend/build backend/static/build
-    startCommand: gunicorn backend.wsgi:app
-    healthCheckPath: /api/hello
+    runtime: python
+    build:
+      workingDir: backend
+      buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app
+    envVars:
+      - key: SECRET_KEY
+        value: R8f3$7kd!LpZ0q2@5mXb9TzY1wQe
+      - key: JWT_SECRET_KEY
+        value: aB3#kLp0!xY2qVz9RmX7Tzw5@Sd
+      - key: MAIL_USERNAME
+        value: divyalamichhane@gmail.com
+      - key: MAIL_PASSWORD
+        value: X9v#rT7p!Lm3$Qs8Zj2@WfB0
+      - key: REACT_APP_BACKEND_URL
+        value: https://whanau-tech.onrender.com

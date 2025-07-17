@@ -1,0 +1,282 @@
+/* =========================================
+   Shared Variables - Light and Dark Modes
+   ========================================= */
+
+:root {
+	--pounamu-green: #e4db52;
+	--moana-blue: #4dba69;
+	--kowhai-yellow: #9ecc9e;
+	--hangi-brown: #513c3c;
+	--black: #000000;
+	--white: #ffffff;
+
+	--bg-color: var(--white);
+	--text-color: var(--black);
+	--section-bg-color: var(--white);
+	--section-text-color: #a39898;
+	--card-bg-color: #f8f9fa;
+
+	--blockquote-bg: var(--white);
+	--blockquote-border: var(--kowhai-yellow);
+	--blockquote-text: var(--hangi-brown);
+
+	--carousel-control-bg: rgba(0, 0, 0, 0.5);
+	--carousel-indicator-bg: var(--kowhai-yellow);
+
+	--card-shadow: rgba(0, 0, 0, 0.1);
+	--border-radius: 10px;
+}
+
+body.dark-mode {
+	--bg-color: #121212;
+	--section-bg-color: #222222;
+	--section-text-color: #bbbbbb;
+	--text-color: #e0e0e0;
+	--card-bg-color: #1e1e1e;
+
+	--blockquote-bg: #2a2a2a;
+	--blockquote-border: #ffb300;
+	--blockquote-text: #8fc194;
+
+	--carousel-control-bg: rgba(255, 255, 255, 0.5);
+	--carousel-indicator-bg: #ffb300;
+
+	--card-shadow: rgba(255, 255, 255, 0.1);
+}
+
+/* =======================
+   Base & Layout
+========================== */
+
+html,
+body,
+#root {
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	min-height: 100vh;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.tech-consultation-page,
+.digital-education-page,
+.cloud-solutions-page,
+.custom-software-page,
+.cybersecurity-page,
+.it-support-page {
+	min-height: 100vh;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+}
+
+/* =======================
+   Hero Section
+========================== */
+
+.hero-section {
+	padding: 3rem 1rem;
+	background-color: var(--pounamu-green);
+	color: var(--white);
+	text-align: center;
+}
+
+.hero-section h1.display-4 {
+	font-weight: 700;
+	margin-bottom: 1rem;
+	font-size: 2.75rem;
+}
+
+.hero-section p.lead {
+	font-size: 1.25rem;
+	margin-bottom: 2rem;
+	white-space: pre-line;
+}
+
+/* =======================
+   Shared Sections
+========================== */
+
+section {
+	margin-bottom: 3rem;
+	background-color: var(--section-bg-color);
+	color: var(--section-text-color);
+	padding: 1rem 2rem;
+	border-radius: var(--border-radius);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+h2.section-title,
+h2.h3 {
+	color: var(--pounamu-green);
+	text-align: center;
+	margin-bottom: 1.5rem;
+	font-weight: 600;
+}
+
+/* =======================
+   Cards
+========================== */
+
+.card {
+	border: none;
+	border-radius: var(--border-radius);
+	background-color: var(--card-bg-color);
+	box-shadow: 0 1px 3px var(--card-shadow);
+	transition: box-shadow 0.3s ease;
+	color: var(--text-color);
+}
+
+.card:hover {
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+	display: flex;
+	align-items: flex-start;
+	padding: 1.25rem 1.5rem;
+}
+
+.card-text {
+	margin: 0;
+	font-size: 1rem;
+	line-height: 1.4;
+	color: var(--text-color);
+}
+
+/* =======================
+   CTA Section
+========================== */
+
+.cta-section {
+	padding: 2rem 1.5rem;
+	border-radius: var(--border-radius);
+	text-align: center;
+}
+
+.cta-section h2.section-title {
+	margin-bottom: 1rem;
+}
+
+.cta-section p.fs-5 {
+	font-size: 1.25rem;
+	margin-bottom: 1.5rem;
+}
+
+/* =======================
+   Testimonial Section
+========================== */
+
+.testimonial-section blockquote {
+	background-color: var(--blockquote-bg);
+	padding: 1.75rem 2rem;
+	border-left: 5px solid var(--blockquote-border);
+	border-radius: var(--border-radius);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+	font-style: italic;
+	color: var(--blockquote-text);
+	max-width: 700px;
+	margin: 0 auto;
+	font-size: 1.2rem;
+	line-height: 1.5;
+}
+
+/* =======================
+   How Section
+========================== */
+
+ol.list-group-numbered {
+	counter-reset: item;
+	list-style: none;
+	padding-left: 0;
+	max-width: 600px;
+	margin: 0 auto;
+	background-color: var(--section-bg-color);
+	border-radius: var(--border-radius);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+	padding: 1rem 1.5rem;
+}
+
+ol.list-group-numbered li.list-group-item {
+	display: flex;
+	align-items: flex-start;
+	padding: 0.75rem 1rem;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	margin-bottom: 0.75rem;
+	background-color: var(--card-bg-color);
+	font-size: 1rem;
+	line-height: 1.4;
+	color: var(--text-color);
+}
+
+ol.list-group-numbered li::before {
+	content: counter(item) ".";
+	counter-increment: item;
+	font-weight: 600;
+	margin-right: 0.75rem;
+}
+
+/* =======================
+   Carousel
+========================== */
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+	background-color: var(--carousel-control-bg);
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+}
+
+.carousel-indicators [data-bs-target] {
+	background-color: var(--carousel-indicator-bg);
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+/* =======================
+   Responsive
+========================== */
+
+@media (max-width: 768px) {
+	.card-body {
+		flex-direction: column;
+	}
+
+	.hero-section h1.display-4 {
+		font-size: 2.25rem;
+	}
+
+	.fs-3.me-3 {
+		margin-right: 0;
+		margin-bottom: 0.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero-section {
+		padding: 2rem 1rem;
+	}
+
+	.btn-primary {
+		font-size: 0.9rem;
+		padding: 0.4rem 1rem;
+	}
+
+	.how-section ol.list-group-numbered li.list-group-item {
+		font-size: 0.95rem;
+	}
+}
