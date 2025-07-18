@@ -9,7 +9,7 @@ class Config:
     ENV = os.getenv('FLASK_ENV', 'production')
 
     if ENV == 'production':
-        db_path = os.path.abspath(os.path.join(basedir, 'app', 'database', 'whanau.db'))
+        db_path = os.path.abspath(os.path.join(basedir, 'database', 'whanau.db'))
     else:
         db_path = os.path.abspath(os.path.join(basedir, 'backend', 'database', 'whanau.db'))
 
