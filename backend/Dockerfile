@@ -1,32 +1,32 @@
-# Use official Python slim image
+# Use official Python image
 FROM python:3.11-slim
 
-# Install system dependencies for building Rust and Python packages
-RUN apt-get update && apt-get install -y curl build-essential git
+# Set env variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/root/.cargo/bin:$PATH"
 
-# Install Rust toolchain
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Set working directory in container
+# Set working directory
 WORKDIR /app
 
-# Copy requirements first to leverage Docker cache
-COPY requirements.txt .
+# Install system dependencies & Rust (for llama-cpp-python)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+ && rm -rf /var/lib/apt/lists/* \
+ && curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-# Upgrade pip and install python dependencies
+# Copy dependency list and install Python packages
+COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy the rest of the backend code
+# Copy entire backend directory into container
 COPY . .
 
-# Expose Flask default port
+# Expose port for Flask
 EXPOSE 5000
 
-# Set environment variables for Flask
-ENV FLASK_APP=wsgi.py
-ENV FLASK_RUN_HOST=0.0.0.0
-
-# Run the Flask app
-CMD ["flask", "run"]
+# Run app using Gunicorn and wsgi.py
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
