@@ -6,7 +6,7 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'your_secret_key_here')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key_here')
 
-    ENV = os.getenv('FLASK_ENV', 'development')
+    ENV = os.getenv('FLASK_ENV', 'production')
 
     if ENV == 'production':
         db_path = os.path.abspath(os.path.join(basedir, 'app', 'database', 'whanau.db'))
