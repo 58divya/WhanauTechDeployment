@@ -15,7 +15,6 @@ __pycache__/
 venv/
 ENV/
 env/
-build/
 develop-eggs/
 dist/
 eggs/
@@ -27,8 +26,8 @@ pyvenv.cfg
 
 # --- Flask ---
 instance/
-*.sqlite
-*.db
+# *.sqlite
+# *.db
 *.log
 
 # --- Node / React ---
