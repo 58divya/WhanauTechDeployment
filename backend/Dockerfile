@@ -13,14 +13,14 @@ RUN apt-get update && apt-get install -y \
     build-essential \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file and install Python dependencies
+# Copy requirements file from backend folder (relative to build context) and install Python dependencies
 COPY backend/requirements.txt .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy backend source code
-COPY . .
+# Copy only backend folder contents into /app
+COPY backend/ .
 
 # Expose port Flask will run on
 EXPOSE 5000
