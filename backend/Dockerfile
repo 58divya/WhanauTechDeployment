@@ -1,32 +1,30 @@
-# Use official lightweight Python image
-FROM python:3.11-slim
+FROM python:3.12-slim
 
-# Set environment variables
+# Use correct ENV syntax (avoids legacy warnings)
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set working directory inside container
 WORKDIR /app
 
-# Install system dependencies (required for some Python packages)
+# Install system dependencies for building llama-cpp-python
 RUN apt-get update && apt-get install -y \
     build-essential \
- && rm -rf /var/lib/apt/lists/*
+    cmake \
+    libopenblas-dev \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file and install Python dependencies
+# Upgrade pip and wheel
+RUN pip install --upgrade pip setuptools wheel
+
+# Copy and install Python dependencies
 COPY requirements.txt .
-
-RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy backend source code into container
+# Copy application code
 COPY . .
 
-# Create database folder if not exists (avoid runtime error)
-RUN mkdir -p /database
-
-# Expose the port Flask/Gunicorn will run on
+# Set the port and command to run
 EXPOSE 5000
-
-# Start the app using Gunicorn and the wsgi entry point
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]

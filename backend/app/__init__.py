@@ -4,10 +4,14 @@ from app.extensions import db, mail, jwt
 from app.routes.contact import contact_bp
 from app.routes.advisors import advisors_bp
 from app.routes.chatbot import chatbot_bp
+from app.config import Config
 
 def create_app():
-    # Path to React build folder relative to this file
-    frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'build'))
+    # Backend root directory
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+    # React frontend build folder under backend/build
+    frontend_path = os.path.join(base_dir, 'build')
     print("Frontend path:", frontend_path)
     print("Index exists:", os.path.exists(os.path.join(frontend_path, "index.html")))
 
@@ -18,19 +22,16 @@ def create_app():
     )
     print("Flask root_path:", app.root_path)
 
-    # Setup database directory and file path
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'database'))
-    if not os.path.exists(base_dir):
-        os.makedirs(base_dir, exist_ok=True)  # Create the database directory if missing
-        print(f"Created missing database directory at {base_dir}")
+    # Load config
+    app.config.from_object(Config)
 
-    db_path = os.path.join(base_dir, 'whanau.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "your_secret_key")
-    app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY", "your_jwt_secret_key")
+    # Ensure database directory exists (backend/database)
+    db_dir = os.path.join(base_dir, 'database')
+    if not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
+        print(f"Created missing database directory at {db_dir}")
 
-    # Initialize extensions
+    # Initialize Flask extensions
     db.init_app(app)
     mail.init_app(app)
     jwt.init_app(app)
@@ -40,11 +41,11 @@ def create_app():
     app.register_blueprint(advisors_bp)
     app.register_blueprint(chatbot_bp)
 
-    # Create database tables (if not already created)
+    # Create database tables if not exist
     with app.app_context():
         db.create_all()
 
-    # Serve static images from backend/app/static/images
+    # Serve static images route (adjust if your static folder differs)
     @app.route('/static/images/<path:filename>')
     def serve_image(filename):
         image_dir = os.path.join(app.root_path, 'static', 'images')
@@ -55,12 +56,12 @@ def create_app():
             print(f"Error serving image: {str(e)}")
             return {"error": "File not found"}, 404
 
-    # Serve React frontend for all other routes (SPA support)
+    # Serve React frontend (SPA)
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve_react(path):
         requested_path = os.path.join(app.static_folder, path)
-        if path != '' and os.path.exists(requested_path):
+        if path and os.path.exists(requested_path):
             return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, 'index.html')
 

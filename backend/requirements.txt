@@ -2,12 +2,15 @@ Flask-Cors==4.0.0
 Flask-SQLAlchemy==3.1.1
 Flask-JWT-Extended==4.6.0
 Flask-Mail==0.9.1
-requests==2.31.0
+requests>=2.32,<2.33        
 pydantic==2.7.1
 python-dotenv==1.0.1
 python-dateutil
-llama-cpp-python
+llama-cpp-python==0.2.57
+
 flask
 together
 gunicorn
 
+pillow==10.3.0             
+rich==13.7.1              
