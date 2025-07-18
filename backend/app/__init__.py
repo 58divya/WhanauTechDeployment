@@ -31,6 +31,9 @@ def create_app():
         os.makedirs(db_dir, exist_ok=True)
         print(f"Created missing database directory at {db_dir}")
 
+    print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
+
+
     # Initialize Flask extensions
     db.init_app(app)
     mail.init_app(app)
