@@ -26,7 +26,7 @@ def create_app():
     app.config.from_object(Config)
 
     # Ensure the database directory exists (e.g., backend/database)
-    db_dir = os.path.join(base_dir, 'database')
+    db_dir = os.path.join(base_dir, 'app' ,'database')
     if not os.path.exists(db_dir):
         os.makedirs(db_dir, exist_ok=True)
         print(f"Created missing database directory at {db_dir}")
