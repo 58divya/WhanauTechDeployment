@@ -20,7 +20,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Copy backend source code
-COPY backend/ .
+COPY . .
 
 # Expose port Flask will run on
 EXPOSE 5000
