@@ -9,10 +9,9 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'super-secret')
     SQLALCHEMY_DATABASE_URI = os.getenv(
         'DATABASE_URL',
-        'sqlite:///' + os.path.join(basedir, 'database', 'whanau.db')
+        'sqlite:///' + os.path.join(basedir, '..', 'database', 'whanau.db')  # points to backend/database
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'super-secret-jwt')
 
     MAIL_SERVER = 'smtp.gmail.com'
