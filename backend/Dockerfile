@@ -20,7 +20,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Copy backend code
-COPY backend/ /app/
+COPY . .
 
 # Copy React build (ensure React is built before this)
 COPY backend/build/ /app/build/
