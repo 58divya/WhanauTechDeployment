@@ -25,12 +25,16 @@ def create_app():
     # Load config
     app.config.from_object(Config)
 
-    # Ensure the database directory exists (e.g., backend/database)
-    db_dir = os.path.join(base_dir, 'app' ,'database')
-    if not os.path.exists(db_dir):
-        os.makedirs(db_dir, exist_ok=True)
-        print(f"Created missing database directory at {db_dir}")
+    # Ensure the database directory exists (dynamically from DB URI)
+    db_uri = app.config['SQLALCHEMY_DATABASE_URI']
+    if db_uri.startswith("sqlite:///"):
+        db_path = db_uri.replace("sqlite:///", "")
+        db_dir = os.path.dirname(db_path)
+        if not os.path.exists(db_dir):
+            os.makedirs(db_dir, exist_ok=True)
+            print(f"Created missing database directory at {db_dir}")
 
+    print("Database URI:", db_uri)
     print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
 
     # Initialize Flask extensions
