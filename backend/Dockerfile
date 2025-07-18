@@ -23,13 +23,13 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy backend app source code
-COPY backend/app ./app
+COPY app ./app
 
 # Copy React build folder into /app/build
-COPY backend/build ./build
+COPY build ./build
 
 # Copy  database folder into /app/database
-COPY backend/database ./database
+COPY database ./database
 
 
 # Set the port and command to run
