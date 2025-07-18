@@ -31,6 +31,10 @@ COPY build ./build
 # Copy  database folder into /app/database
 COPY database ./database
 
+# Copy any other scripts, configs if necessary
+COPY __init__.py .
+COPY wsgi.py .
+
 
 # Set the port and command to run
 EXPOSE 5000
