@@ -22,8 +22,15 @@ RUN pip install --upgrade pip setuptools wheel
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy application code
-COPY . .
+# Copy backend app source code
+COPY backend/app ./app
+
+# Copy React build folder into /app/build
+COPY backend/build ./build
+
+# Copy  database folder into /app/database
+COPY backend/database ./database
+
 
 # Set the port and command to run
 EXPOSE 5000
