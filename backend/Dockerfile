@@ -1,32 +1,29 @@
-# Use official Python image
+# Use official lightweight Python image
 FROM python:3.11-slim
 
-# Set env variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV PATH="/root/.cargo/bin:$PATH"
 
-# Set working directory
+# Set working directory inside container
 WORKDIR /app
 
-# Install system dependencies & Rust (for llama-cpp-python)
+# Install system dependencies (if any needed)
 RUN apt-get update && apt-get install -y \
     build-essential \
-    curl \
-    git \
- && rm -rf /var/lib/apt/lists/* \
- && curl https://sh.rustup.rs -sSf | bash -s -- -y
+ && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency list and install Python packages
-COPY requirements.txt .
+# Copy requirements file and install Python dependencies
+COPY backend/requirements.txt .
+
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy entire backend directory into container
-COPY . .
+# Copy backend source code
+COPY backend/ .
 
-# Expose port for Flask
+# Expose port Flask will run on
 EXPOSE 5000
 
-# Run app using Gunicorn and wsgi.py
+# Run Gunicorn with your wsgi module
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
