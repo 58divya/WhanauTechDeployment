@@ -23,7 +23,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Create database folder if not exists (avoid runtime error)
-RUN mkdir -p /app/database
+RUN mkdir -p /database
 
 # Expose the port Flask/Gunicorn will run on
 EXPOSE 5000
