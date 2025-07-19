@@ -5,6 +5,8 @@ from app.routes.contact import contact_bp
 from app.routes.advisors import advisors_bp
 from app.routes.chatbot import chatbot_bp
 from app.config import Config
+from flask_cors import CORS
+
 
 def create_app():
     # Backend root directory (one level up from this file)
@@ -12,15 +14,18 @@ def create_app():
 
     # React frontend build folder under backend/build
     frontend_path = os.path.join(base_dir, 'build')
-    print("Frontend path:", frontend_path)
-    print("Index exists:", os.path.exists(os.path.join(frontend_path, "index.html")))
+    # print("Frontend path:", frontend_path)
+    # print("Index exists:", os.path.exists(os.path.join(frontend_path, "index.html")))
 
     app = Flask(
         __name__,
         static_folder=frontend_path,
         static_url_path='/'  # serve React static files from root URL
     )
-    print("Flask root_path:", app.root_path)
+    # print("Flask root_path:", app.root_path)
+
+    CORS(app, origins=["http://localhost:3000", "https://yourfrontenddomain.com"])
+
 
     # Load config
     app.config.from_object(Config)
@@ -34,8 +39,8 @@ def create_app():
             os.makedirs(db_dir, exist_ok=True)
             print(f"Created missing database directory at {db_dir}")
 
-    print("Database URI:", db_uri)
-    print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
+    # print("Database URI:", db_uri)
+    # print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])
 
     # Initialize Flask extensions
     db.init_app(app)
