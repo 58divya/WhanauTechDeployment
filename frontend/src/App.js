@@ -17,7 +17,6 @@ import translations from "./components/translations";
 import TestimonialSection from "./components/TestimonialSection";
 import AdvisorProfile from "./components/AdvisorProfile";
 
-// Import Technology Consultation page components
 import TechnologyConsultationLanding from "./components/tech/TechnologyConsultation";
 import DigitalEducation from "./components/tech/DigitalEducation";
 import ITSupport from "./components/tech/ITSupports";
@@ -26,7 +25,7 @@ import CloudSolutions from "./components/tech/CloudSolutions";
 import CustomSoftware from "./components/tech/CustomSoftware";
 
 function App() {
-	// console.log("REACT_APP_BACKEND_URL:", process.env.REACT_APP_BACKEND_URL);
+	console.log("REACT_APP_BACKEND_URL:", process.env.REACT_APP_BACKEND_URL);
 
 	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [selectedLanguage, setSelectedLanguage] = useState("en");
@@ -37,22 +36,35 @@ function App() {
 		if (savedDarkMode) {
 			document.body.classList.add("dark-mode");
 		}
+
+		const savedLang = localStorage.getItem("selected-language");
+		if (savedLang) {
+			setSelectedLanguage(savedLang);
+		}
 	}, []);
 
 	const toggleDarkMode = () => {
-		setIsDarkMode(!isDarkMode);
-		document.body.classList.toggle("dark-mode");
-		localStorage.setItem("dark-mode", !isDarkMode ? "enabled" : "disabled");
+		setIsDarkMode((prev) => {
+			const newDarkMode = !prev;
+			if (newDarkMode) {
+				document.body.classList.add("dark-mode");
+				localStorage.setItem("dark-mode", "enabled");
+			} else {
+				document.body.classList.remove("dark-mode");
+				localStorage.setItem("dark-mode", "disabled");
+			}
+			return newDarkMode;
+		});
 	};
 
 	const handleLanguageChange = (lang) => {
 		setSelectedLanguage(lang);
+		localStorage.setItem("selected-language", lang);
 	};
 
 	return (
 		<Router>
 			<div className="App">
-				{/* Navbar outside Routes so it shows on all pages */}
 				<AppNavbar
 					isDarkMode={isDarkMode}
 					toggleDarkMode={toggleDarkMode}
@@ -61,63 +73,63 @@ function App() {
 					translations={translations[selectedLanguage]}
 				/>
 
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<>
-								<HeroSection selectedLanguage={selectedLanguage} />
-								<ServiceSection selectedLanguage={selectedLanguage} />
-								<AdvisorList selectedLanguage={selectedLanguage} />
-								<Chatbot selectedLanguage={selectedLanguage} />
-								<AboutSection selectedLanguage={selectedLanguage} />
-								<TestimonialSection selectedLanguage={selectedLanguage} />
-								<ContactForm selectedLanguage={selectedLanguage} />
-							</>
-						}
-					/>
+				<main>
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<>
+									<HeroSection selectedLanguage={selectedLanguage} />
+									<ServiceSection selectedLanguage={selectedLanguage} />
+									<AdvisorList selectedLanguage={selectedLanguage} />
+									<Chatbot selectedLanguage={selectedLanguage} />
+									<AboutSection selectedLanguage={selectedLanguage} />
+									<TestimonialSection selectedLanguage={selectedLanguage} />
+									<ContactForm selectedLanguage={selectedLanguage} />
+								</>
+							}
+						/>
+						<Route
+							path="/technology-consultation"
+							element={
+								<TechnologyConsultationLanding
+									selectedLanguage={selectedLanguage}
+								/>
+							}
+						/>
+						<Route
+							path="/digital-education"
+							element={<DigitalEducation selectedLanguage={selectedLanguage} />}
+						/>
+						<Route
+							path="/it-support"
+							element={<ITSupport selectedLanguage={selectedLanguage} />}
+						/>
+						<Route
+							path="/cybersecurity-guidance"
+							element={
+								<CybersecurityGuidance selectedLanguage={selectedLanguage} />
+							}
+						/>
+						<Route
+							path="/cloud-solutions"
+							element={<CloudSolutions selectedLanguage={selectedLanguage} />}
+						/>
+						<Route
+							path="/custom-software"
+							element={<CustomSoftware selectedLanguage={selectedLanguage} />}
+						/>
+						<Route
+							path="/advisors"
+							element={<AdvisorList selectedLanguage={selectedLanguage} />}
+						/>
+						<Route
+							path="/advisor/:id"
+							element={<AdvisorProfile selectedLanguage={selectedLanguage} />}
+						/>
+					</Routes>
+				</main>
 
-					<Route
-						path="/technology-consultation"
-						element={
-							<TechnologyConsultationLanding
-								selectedLanguage={selectedLanguage}
-							/>
-						}
-					/>
-					<Route
-						path="/digital-education"
-						element={<DigitalEducation selectedLanguage={selectedLanguage} />}
-					/>
-					<Route
-						path="/it-support"
-						element={<ITSupport selectedLanguage={selectedLanguage} />}
-					/>
-					<Route
-						path="/cybersecurity-guidance"
-						element={
-							<CybersecurityGuidance selectedLanguage={selectedLanguage} />
-						}
-					/>
-					<Route
-						path="/cloud-solutions"
-						element={<CloudSolutions selectedLanguage={selectedLanguage} />}
-					/>
-					<Route
-						path="/custom-software"
-						element={<CustomSoftware selectedLanguage={selectedLanguage} />}
-					/>
-					<Route
-						path="/advisors"
-						element={<AdvisorList selectedLanguage={selectedLanguage} />}
-					/>
-					<Route
-						path="/advisor/:id"
-						element={<AdvisorProfile selectedLanguage={selectedLanguage} />}
-					/>
-				</Routes>
-
-				{/* Single Footer for all pages */}
 				<footer className="bg-dark text-white text-center py-4">
 					<p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
 				</footer>

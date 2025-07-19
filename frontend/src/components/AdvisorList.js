@@ -21,11 +21,11 @@ function AdvisorList({ selectedLanguage }) {
 		axios
 			.get(`${backendURL}/api/advisors`)
 			.then((res) => {
-				// console.log("Advisors fetched:", res.data);
+				console.log("Advisors fetched:", res.data);
 				setAdvisors(res.data);
 			})
 			.catch((err) => {
-				// console.error("Error fetching advisors:", err);
+				console.error("Error fetching advisors:", err);
 				setError("Failed to load advisors.");
 			});
 	}, [backendURL]);

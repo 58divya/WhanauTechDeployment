@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import translations from "./translations";
 
+function countWords(str) {
+	return str.trim().split(/\s+/).filter(Boolean).length;
+}
+
 function ContactForm({ selectedLanguage }) {
 	const [formData, setFormData] = useState({
 		name: "",
@@ -12,6 +16,8 @@ function ContactForm({ selectedLanguage }) {
 
 	const t = (translations[selectedLanguage] || translations.en).contact;
 
+	const apiUrl = process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:5000";
+
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.id]: e.target.value });
 		setStatus({ message: "", type: "" });
@@ -19,10 +25,15 @@ function ContactForm({ selectedLanguage }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setIsSubmitting(true);
 		setStatus({ message: "", type: "" });
 
-		const apiUrl = process.env.REACT_APP_API_URL || "http://127.0.0.1:5000";
+		// Only validate message box for min 10 words
+		if (countWords(formData.message) < 10) {
+			setStatus({ message: t.form.messageMinWordsError, type: "error" });
+			return;
+		}
+
+		setIsSubmitting(true);
 
 		try {
 			const response = await fetch(`${apiUrl}/api/contact`, {
@@ -37,17 +48,17 @@ function ContactForm({ selectedLanguage }) {
 			const data = await response.json();
 
 			if (response.ok) {
-				setStatus({ message: data.message, type: "success" });
+				setStatus({ message: t.form.successMessage, type: "success" });
 				setFormData({ name: "", email: "", message: "" });
 			} else {
 				setStatus({
-					message: data.error || "Kaore i tukuna te puka. Whakamātau anō.",
+					message: data.error || t.form.errorMessage,
 					type: "error",
 				});
 			}
 		} catch (error) {
 			setStatus({
-				message: `Pānga hononga: ${error.message}. Whakamātau anō.`,
+				message: `${t.form.connectionError} ${error.message}`,
 				type: "error",
 			});
 		} finally {
@@ -131,13 +142,7 @@ function ContactForm({ selectedLanguage }) {
 							className="btn btn-primary w-100"
 							disabled={isSubmitting}
 						>
-							{isSubmitting
-								? selectedLanguage === "mi"
-									? "Tuku ana..."
-									: "Sending..."
-								: selectedLanguage === "mi"
-								? "Tukua"
-								: "Send"}
+							{isSubmitting ? t.form.sendingButton : t.form.sendButton}
 						</button>
 						{status.message && (
 							<p
